@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Sharetastic</string>
+    <string name="facebook_app_id">237945923414754</string>
+    <string name="fb_login_protocol_scheme">fb237945923414754</string>
+    <string name="Twitter_CONSUMER_KEY">W5ZwUIAfwDV6ThN9bx2XEmXWi</string>
+    <string name="Twitter_CONSUMER_SECRET">BJ9QgpxsUuJwipDCoNsS667uVcuPjyez94Fm0rlENHCwodP320</string>
+</resources>
