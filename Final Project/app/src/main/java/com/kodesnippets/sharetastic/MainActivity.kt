@@ -14,11 +14,11 @@ import com.twitter.sdk.android.core.TwitterException
 import android.widget.Toast
 import com.kodesnippets.sharetastic.Utils.Helper
 
-
 class MainActivity : AppCompatActivity() {
 
     val EMAIL = "email"
     val PUBLIC_PROFILE = "public_profile"
+    val USER_PERMISSION = "user_friends"
 
     lateinit var callbackManager: CallbackManager
     lateinit var facebookLoginButton: LoginButton
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         callbackManager = CallbackManager.Factory.create()
 
         facebookLoginButton = findViewById(R.id.button_facebook_login)
-        facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE))
+        facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
         facebookLoginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Helper.getFacebookUserProfieWithGraphApi(context)
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onError(exception: FacebookException) {
+                Log.v("Error", exception.localizedMessage)
                 Toast.makeText(context,exception.localizedMessage, Toast.LENGTH_SHORT).show()
             }
         })
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun failure(exception: TwitterException) {
+                Log.v("Error", exception.localizedMessage)
                 Toast.makeText(context,exception.localizedMessage, Toast.LENGTH_SHORT).show()
             }
         })
@@ -81,4 +83,6 @@ class MainActivity : AppCompatActivity() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
         twitterLoginButton.onActivityResult(requestCode, resultCode, data)
     }
+
+
 }
