@@ -18,8 +18,8 @@ import java.util.*
 /**
  * Created by aaqibhussain on 11/2/18.
  */
-object Helper {
 
+object Helper {
 
 
     val PUBLISH_ACTION = "publish_actions"
@@ -33,7 +33,7 @@ object Helper {
                     AccessToken.getCurrentAccessToken()
             ) { jsonObject, response ->
 
-                val email = jsonObject.get("email").toString()
+                val email = jsonObject?.get("email")?.toString() ?: ""
                 val name = jsonObject.get("name").toString()
                 val profileObjectImage = jsonObject.getJSONObject("picture").getJSONObject("data").get("url").toString()
                 val user = UserModel(name, email, profileObjectImage, SocialNetwork.Facebook)
@@ -47,6 +47,7 @@ object Helper {
             request.executeAsync()
         }
     }
+    
     fun getTwitterUserProfileWthTwitterCoreApi(context: Context, session: TwitterSession){
 
         TwitterCore.getInstance().getApiClient(session).accountService.verifyCredentials(true, true, false).enqueue(object : Callback<User>() {
@@ -65,6 +66,7 @@ object Helper {
             }
         })
     }
+    
     fun startActivity(context: Context, user: UserModel){
         val activity = context as Activity
         val intent = Intent(context, ShareActivity::class.java)
