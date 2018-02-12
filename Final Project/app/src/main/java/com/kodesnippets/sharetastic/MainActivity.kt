@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onError(exception: FacebookException) {
-                Log.v("Error", exception.localizedMessage)
+               
                 Toast.makeText(context,exception.localizedMessage, Toast.LENGTH_SHORT).show()
             }
         })
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun failure(exception: TwitterException) {
-                Log.v("Error", exception.localizedMessage)
+                
                 Toast.makeText(context,exception.localizedMessage, Toast.LENGTH_SHORT).show()
             }
         })
