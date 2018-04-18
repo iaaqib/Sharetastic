@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kodesnippets.sharetastic.MainActivity" android:gravity="center_horizontal" android:orientation="vertical" android:weightSum="1">
+    tools:context="com.android.sharetastic.com.raywenderlich.sharetastic.MainActivity" android:gravity="center_horizontal" android:orientation="vertical" android:weightSum="1">
 
 
     <ImageView
@@ -35,19 +35,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
     <com.twitter.sdk.android.core.identity.TwitterLoginButton
-        android:id="@+id/button_twitter_login"
+        android:id="@+id/twitterLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_facebook_login"
+        app:layout_constraintTop_toBottomOf="@+id/facebookLoginButton"
         app:layout_constraintVertical_bias="0.1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
          />
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/button_facebook_login"
+        android:id="@+id/facebookLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="47dp"
         android:paddingBottom="15dp"

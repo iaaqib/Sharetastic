@@ -1,9 +1,38 @@
-package com.kodesnippets.sharetastic
+/*
+ * Copyright (c) 2018 Razeware LLC
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
+ * distribute, sublicense, create a derivative work, and/or sell copies of the
+ * Software in any work that is designed, intended, or marketed for pedagogical or
+ * instructional purposes related to programming, coding, application development,
+ * or information technology.  Permission for such use, copying, modification,
+ * merger, publication, distribution, sublicensing, creation of derivative works,
+ * or sale is expressly withheld.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+package com.raywenderlich.sharetastic
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -11,61 +40,46 @@ import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.HttpMethod
 import com.facebook.login.LoginManager
-import com.kodesnippets.sharetastic.model.SocialNetwork
-import com.kodesnippets.sharetastic.model.UserModel
+import com.raywenderlich.sharetastic.model.SocialNetwork
+import com.raywenderlich.sharetastic.model.UserModel
 import com.squareup.picasso.Picasso
-import java.util.*
 import com.twitter.sdk.android.core.models.Tweet
-import android.provider.SyncStateContract.Helpers.update
 import com.twitter.sdk.android.core.*
-import com.twitter.sdk.android.core.services.StatusesService
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.InputFilter
 import android.view.View
+import com.raywenderlich.android.sharetastic.R
+import kotlinx.android.synthetic.main.activity_share.nameTextView
+import kotlinx.android.synthetic.main.activity_share.userNameTextView
+import kotlinx.android.synthetic.main.activity_share.connectedWithTextView
+import kotlinx.android.synthetic.main.activity_share.postEditText
+import kotlinx.android.synthetic.main.activity_share.profileImageView
+import kotlinx.android.synthetic.main.activity_share.postButton
+import kotlinx.android.synthetic.main.activity_share.characterLimitTextView
 
 
-/**
- * Created by aaqibhussain on 10/2/18.
- */
 class ShareActivity : AppCompatActivity() {
 
-    lateinit var nameTextView: TextView
-    lateinit var userNameTextView: TextView
-    lateinit var connectedWithTextView: TextView
-    lateinit var profileImageView: ImageView
-    lateinit var postEditText: EditText
-    lateinit var postButton: Button
-    lateinit var characterLimitTextView: TextView
 
     lateinit var user: UserModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
-        setUpViews()
+        postButtonAction()
         user = intent.extras.get("user") as UserModel
         setData(user)
     }
 
-    fun setUpViews(){
-        nameTextView = findViewById(R.id.textView_name)
-        userNameTextView = findViewById(R.id.textView_userName)
-        connectedWithTextView = findViewById(R.id.textView_connected_with)
-        profileImageView = findViewById(R.id.imageView_profile_picture)
-        postEditText = findViewById(R.id.editText_post)
-        postButton = findViewById(R.id.button_post)
-        characterLimitTextView = findViewById(R.id.textView_character_limit)
-        action()
 
-    }
+    fun postButtonAction(){
 
-    fun action(){
         postButton.setOnClickListener{view ->
 
           if(postEditText.text.equals("")) {
 
-              Toast.makeText(this,"Message cannot be empty",Toast.LENGTH_SHORT).show()
+              Toast.makeText(this,R.string.cannot_be_empty,Toast.LENGTH_SHORT).show()
 
           }else if (user.socialNetwork == SocialNetwork.Facebook){
             postStatusToFacebook(postEditText.text.toString())
@@ -79,7 +93,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
 
-    fun setData(user: UserModel){
+    fun setData(user: UserModel) {
         nameTextView.text = user.name
         userNameTextView.text = if (user.socialNetwork == SocialNetwork.Twitter)  "@${user.userName}" else user.userName
         connectedWithTextView.text =  if (user.socialNetwork == SocialNetwork.Twitter) "${connectedWithTextView.text}Twitter" else "${connectedWithTextView.text}Facebook"
@@ -111,7 +125,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
 
-    fun postStatusToFacebook(message: String){
+    fun postStatusToFacebook(message: String) {
 
         if(AccessToken.getCurrentAccessToken() != null){
             val params = Bundle()
@@ -125,7 +139,7 @@ class ShareActivity : AppCompatActivity() {
                     GraphRequest.Callback { response ->
                         if (response.error == null){
 
-                            Toast.makeText(this,"Status Posted...",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this,R.string.facebook_posted,Toast.LENGTH_SHORT).show()
                         }else{
                             Toast.makeText(this,response.error.errorMessage,Toast.LENGTH_SHORT).show()
                         }
@@ -138,13 +152,13 @@ class ShareActivity : AppCompatActivity() {
 
     }
 
-    fun postATweet(message: String){
+    fun postATweet(message: String) {
 
         val statusesService = TwitterCore.getInstance().apiClient.getStatusesService()
         val context = this
         statusesService.update(message, null, null, null, null, null, null, null, null).enqueue(object : Callback<Tweet>() {
             override fun success(result: Result<Tweet>) {
-                Toast.makeText(context,"Tweeted Sent!!!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,R.string.tweet_posted,Toast.LENGTH_SHORT).show()
             }
 
             override  fun failure(exception: TwitterException) {
@@ -157,7 +171,7 @@ class ShareActivity : AppCompatActivity() {
 
     }
     //For twitter when user types the character count needs to be changed
-    fun onTextChangeListener(){
+    fun onTextChangeListener() {
         postEditText.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -176,7 +190,7 @@ class ShareActivity : AppCompatActivity() {
 
     }
 
-    fun sendToMainActivity(){
+    fun sendToMainActivity() {
         if (user.socialNetwork == SocialNetwork.Facebook) {
             LoginManager.getInstance().logOut()
         }else {

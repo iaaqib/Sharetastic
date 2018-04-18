@@ -1,4 +1,4 @@
-package com.kodesnippets.sharetastic
+package com.raywenderlich.sharetastic
 
 import org.junit.Test
 

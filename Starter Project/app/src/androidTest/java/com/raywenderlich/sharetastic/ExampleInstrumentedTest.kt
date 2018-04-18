@@ -1,4 +1,4 @@
-package com.kodesnippets.sharetastic
+package com.raywenderlich.sharetastic
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
