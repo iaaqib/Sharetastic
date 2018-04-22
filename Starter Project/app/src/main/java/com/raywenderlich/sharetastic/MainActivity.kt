@@ -47,9 +47,7 @@ import kotlinx.android.synthetic.main.activity_main.facebookLoginButton
 
 class MainActivity : AppCompatActivity() {
 
-    val EMAIL = "email"
-    val PUBLIC_PROFILE = "public_profile"
-    val USER_PERMISSION = "user_friends"
+
 
     lateinit var callbackManager: CallbackManager
 
