@@ -66,8 +66,7 @@ class ShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
         postButtonAction()
-        user = intent.extras.get("user") as UserModel
-        setData(user)
+
     }
 
 
@@ -78,21 +77,6 @@ class ShareActivity : AppCompatActivity() {
 
 
 
-        }
-    }
-
-    fun setData(user: UserModel) {
-        nameTextView.text = user.name
-        userNameTextView.text = if (user.socialNetwork == SocialNetwork.Twitter)  "@${user.userName}" else user.userName
-        connectedWithTextView.text =  if (user.socialNetwork == SocialNetwork.Twitter) "${connectedWithTextView.text}Twitter" else "${connectedWithTextView.text}Facebook"
-        characterLimitTextView.visibility =  if (user.socialNetwork == SocialNetwork.Twitter) View.VISIBLE else View.GONE
-
-        Picasso.with(this).load(user.profilePictureUrl).placeholder(R.drawable.ic_user).into(profileImageView)
-        //If user is logged in with twitter only then enable the character limit
-        if (user.socialNetwork == SocialNetwork.Twitter){
-            postEditText.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(240)
-            ))
-            onTextChangeListener()
         }
     }
 
