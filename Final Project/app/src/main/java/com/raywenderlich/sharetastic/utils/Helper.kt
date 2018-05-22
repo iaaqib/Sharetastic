@@ -65,7 +65,6 @@ object Helper {
                 val name = jsonObject.get("name").toString()
                 val profileObjectImage = jsonObject.getJSONObject("picture").getJSONObject("data").get("url").toString()
                 val user = UserModel(name, email, profileObjectImage, SocialNetwork.Facebook)
-
                 startActivity(context, user)
             }
 
@@ -76,13 +75,13 @@ object Helper {
         }
     }
     
-    fun getTwitterUserProfileWthTwitterCoreApi(context: Context, session: TwitterSession){
+    fun getTwitterUserProfileWthTwitterCoreApi(context: Context, session: TwitterSession) {
 
         TwitterCore.getInstance().getApiClient(session).accountService.verifyCredentials(true, true, false).enqueue(object : Callback<User>() {
             override fun success(result: Result<User>) {
-               val name = result.data.name
-               val userName = result.data.screenName
-               val profileImageUrl = result.data.profileImageUrl.replace("_normal", "")
+                val name = result.data.name
+                val userName = result.data.screenName
+                val profileImageUrl = result.data.profileImageUrl.replace("_normal", "")
                 val user = UserModel(name, userName, profileImageUrl, SocialNetwork.Twitter)
                 startActivity(context, user)
 

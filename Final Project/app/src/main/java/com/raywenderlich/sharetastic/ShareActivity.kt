@@ -88,7 +88,6 @@ class ShareActivity : AppCompatActivity() {
            postATweet(postEditText.text.toString())
           }
 
-
         }
     }
 

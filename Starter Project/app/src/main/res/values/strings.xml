@@ -3,5 +3,6 @@
     <string name="tweet_posted">Tweet Sent!!!</string>
     <string name="facebook_posted">Status Posted...</string>
     <string name="cannot_be_empty">Message cannot be empty</string>
-
+    <string name="facebook_app_id">237945923414754</string>
+    <string name="fb_login_protocol_scheme">fb237945923414754</string>
 </resources>

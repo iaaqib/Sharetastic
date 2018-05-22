@@ -39,6 +39,7 @@ import java.util.*
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.TwitterException
 import android.widget.Toast
+import com.facebook.login.LoginManager
 import com.raywenderlich.android.sharetastic.R
 import com.raywenderlich.sharetastic.utils.Helper
 import kotlinx.android.synthetic.main.activity_main.twitterLoginButton
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         callbackManager = CallbackManager.Factory.create()
         facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_friends"))
         facebookLoginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Helper.getFacebookUserProfileWithGraphApi(context)
