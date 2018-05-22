@@ -56,20 +56,19 @@ class SplashActivity : AppCompatActivity() {
         }.priority = Thread.NORM_PRIORITY
     }
 
-    fun startActivityOnBasisOfSession(){
-        if(AccessToken.getCurrentAccessToken() != null){
+    fun startActivityOnBasisOfSession() {
+        if(AccessToken.getCurrentAccessToken() != null) {
             Helper.getFacebookUserProfileWithGraphApi(this)
-        }else if (TwitterCore.getInstance().sessionManager.activeSession != null){
+        } else if (TwitterCore.getInstance().sessionManager.activeSession != null) {
 
             Helper.getTwitterUserProfileWthTwitterCoreApi(this, TwitterCore.getInstance().sessionManager.activeSession)
-        }
-        else {
+        } else {
            startActivity()
         }
 
     }
-    fun startActivity(){
-        var intent = Intent(applicationContext, MainActivity::class.java)
+    fun startActivity() {
+        val intent = Intent(applicationContext, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

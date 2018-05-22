@@ -49,6 +49,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.InputFilter
 import android.view.View
+import com.facebook.FacebookSdk
 import com.raywenderlich.android.sharetastic.R
 import kotlinx.android.synthetic.main.activity_share.nameTextView
 import kotlinx.android.synthetic.main.activity_share.userNameTextView
@@ -192,6 +193,7 @@ class ShareActivity : AppCompatActivity() {
     fun sendToMainActivity() {
         if (user.socialNetwork == SocialNetwork.Facebook) {
             LoginManager.getInstance().logOut()
+
         }else {
             TwitterCore.getInstance().sessionManager.clearActiveSession()
         }

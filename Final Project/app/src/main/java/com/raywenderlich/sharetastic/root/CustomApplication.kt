@@ -32,6 +32,7 @@ package com.raywenderlich.sharetastic.root
 
 import android.app.Application
 import android.util.Log
+import com.facebook.FacebookSdk
 import com.raywenderlich.android.sharetastic.R
 import com.twitter.sdk.android.core.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
@@ -45,7 +46,7 @@ class CustomApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
         val config = TwitterConfig.Builder(this)
                 .logger(DefaultLogger(Log.DEBUG))
                 .twitterAuthConfig(TwitterAuthConfig(resources.getString(R.string.Twitter_CONSUMER_KEY),resources.getString(R.string.Twitter_CONSUMER_SECRET)))

@@ -33,6 +33,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.facebook.*
 import com.facebook.login.LoginResult
 import java.util.*
@@ -62,31 +63,31 @@ class MainActivity : AppCompatActivity() {
         facebookSetup(this)
         twitterSetup(this)
 
-
     }
 
     fun facebookSetup(context: Context) {
 
         callbackManager = CallbackManager.Factory.create()
-        facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_friends"))
-        facebookLoginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                Helper.getFacebookUserProfileWithGraphApi(context)
-            }
 
-            override fun onCancel() {
+        facebookLoginButton.setOnClickListener {
+            facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
+            LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
 
-            }
+                    Helper.getFacebookUserProfileWithGraphApi(context)
+                }
 
-            override fun onError(exception: FacebookException) {
-               
-                Toast.makeText(context,exception.localizedMessage, Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onCancel() {
 
+                }
 
+                override fun onError(exception: FacebookException) {
+                    Toast.makeText(context,exception.localizedMessage, Toast.LENGTH_SHORT).show()
+                }
+            })
 
+        }
     }
 
     fun twitterSetup(context: Context) {
@@ -109,9 +110,9 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
         twitterLoginButton.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 
