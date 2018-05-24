@@ -68,10 +68,8 @@ class MainActivity : AppCompatActivity() {
     fun facebookSetup(context: Context) {
 
         callbackManager = CallbackManager.Factory.create()
-
         facebookLoginButton.setOnClickListener {
             facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(EMAIL, PUBLIC_PROFILE, USER_PERMISSION))
             LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
 

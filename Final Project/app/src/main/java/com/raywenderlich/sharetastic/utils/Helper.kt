@@ -35,6 +35,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
@@ -50,24 +51,19 @@ import java.util.*
 object Helper {
 
 
-    const val PUBLISH_ACTION = "publish_actions"
 
     fun getFacebookUserProfileWithGraphApi(context: Context){
 
         if (AccessToken.getCurrentAccessToken() != null){
-            val activity = context as Activity
-            LoginManager.getInstance().logInWithPublishPermissions(activity, Arrays.asList(PUBLISH_ACTION))
             val request = GraphRequest.newMeRequest(
                     AccessToken.getCurrentAccessToken()
             ) { jsonObject, response ->
-
                 val email = jsonObject?.get("email")?.toString() ?: ""
-                val name = jsonObject.get("name").toString()
-                val profileObjectImage = jsonObject.getJSONObject("picture").getJSONObject("data").get("url").toString()
+                val name = jsonObject?.get("name").toString() ?: ""
+                val profileObjectImage = jsonObject?.getJSONObject("picture")?.getJSONObject("data")?.get("url").toString() ?: ""
                 val user = UserModel(name, email, profileObjectImage, SocialNetwork.Facebook)
                 startActivity(context, user)
             }
-
             val parameters = Bundle()
             parameters.putString("fields", "id,name,link,picture.type(large), email")
             request.parameters = parameters

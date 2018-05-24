@@ -42,6 +42,9 @@
 
         <activity android:name="com.raywenderlich.sharetastic.MainActivity"></activity>
         <activity android:name="com.raywenderlich.sharetastic.ShareActivity"></activity>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider{237945923414754}"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

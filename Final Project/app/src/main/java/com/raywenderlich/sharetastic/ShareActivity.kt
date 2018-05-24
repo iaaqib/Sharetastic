@@ -30,7 +30,9 @@
 
 package com.raywenderlich.sharetastic
 
+import android.app.ActionBar
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -48,7 +50,9 @@ import com.twitter.sdk.android.core.*
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.InputFilter
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import com.facebook.FacebookSdk
 import com.raywenderlich.android.sharetastic.R
 import kotlinx.android.synthetic.main.activity_share.nameTextView
@@ -58,6 +62,9 @@ import kotlinx.android.synthetic.main.activity_share.postEditText
 import kotlinx.android.synthetic.main.activity_share.profileImageView
 import kotlinx.android.synthetic.main.activity_share.postButton
 import kotlinx.android.synthetic.main.activity_share.characterLimitTextView
+import java.util.*
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareDialog
 
 
 class ShareActivity : AppCompatActivity() {
@@ -71,6 +78,8 @@ class ShareActivity : AppCompatActivity() {
         postButtonAction()
         user = intent.extras.get("user") as UserModel
         setData(user)
+
+
     }
 
 
@@ -78,15 +87,16 @@ class ShareActivity : AppCompatActivity() {
 
         postButton.setOnClickListener{view ->
 
-          if(postEditText.text.equals("")) {
+          if(postEditText.text.toString().equals("") && user.socialNetwork == SocialNetwork.Twitter) {
 
               Toast.makeText(this,R.string.cannot_be_empty,Toast.LENGTH_SHORT).show()
 
           }else if (user.socialNetwork == SocialNetwork.Facebook){
-            postStatusToFacebook(postEditText.text.toString())
+            postStatusToFacebook()
 
           }else{
-           postATweet(postEditText.text.toString())
+
+              postATweet(postEditText.text.toString())
           }
 
         }
@@ -98,14 +108,17 @@ class ShareActivity : AppCompatActivity() {
         userNameTextView.text = if (user.socialNetwork == SocialNetwork.Twitter)  "@${user.userName}" else user.userName
         connectedWithTextView.text =  if (user.socialNetwork == SocialNetwork.Twitter) "${connectedWithTextView.text}Twitter" else "${connectedWithTextView.text}Facebook"
         characterLimitTextView.visibility =  if (user.socialNetwork == SocialNetwork.Twitter) View.VISIBLE else View.GONE
-
+        postButton.setText(if (user.socialNetwork == SocialNetwork.Twitter) "POST" else "CREATE POST")
         Picasso.with(this).load(user.profilePictureUrl).placeholder(R.drawable.ic_user).into(profileImageView)
         //If user is logged in with twitter only then enable the character limit
         if (user.socialNetwork == SocialNetwork.Twitter){
             postEditText.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(240)
             ))
             onTextChangeListener()
+        } else {
+            postEditText.visibility = View.GONE
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -125,31 +138,9 @@ class ShareActivity : AppCompatActivity() {
     }
 
 
-    fun postStatusToFacebook(message: String) {
-
-        if(AccessToken.getCurrentAccessToken() != null){
-            val params = Bundle()
-            params.putString("message", message)
-
-            GraphRequest(
-                    AccessToken.getCurrentAccessToken(),
-                    "/me/feed",
-                    params,
-                    HttpMethod.POST,
-                    GraphRequest.Callback { response ->
-                        if (response.error == null){
-
-                            Toast.makeText(this,R.string.facebook_posted,Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(this,response.error.errorMessage,Toast.LENGTH_SHORT).show()
-                        }
-
-                    }
-            ).executeAsync()
-        }
-        postEditText.setText("")
-
-
+    fun postStatusToFacebook() {
+        val content = ShareLinkContent.Builder().build()
+        ShareDialog.show(this, content)
     }
 
     fun postATweet(message: String) {
